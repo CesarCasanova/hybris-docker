@@ -1,0 +1,21 @@
+FROM primetoninc/jdk:1.8
+
+WORKDIR /src
+
+EXPOSE 9001
+
+EXPOSE 9002
+
+EXPOSE 8000
+
+# RUN . ./setantenv.sh && ant clean all
+
+# CMD ["./hybrisserver.sh"]
+
+ARG USERNAME_LOCAL
+ARG UID_LOCAL
+ARG GID_LOCAL
+RUN groupadd -g $GID_LOCAL $USERNAME_LOCAL
+RUN useradd -u $UID_LOCAL -g $GID_LOCAL $USERNAME_LOCAL
+
+USER $USERNAME_LOCAL

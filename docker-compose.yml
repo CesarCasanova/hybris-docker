@@ -1,0 +1,32 @@
+version: '2'
+services:
+  backend:
+    container_name: $CONTAINER_NAME
+    image: $IMAGE_RUNTIME
+    ports:
+      - '9001:9001'
+      - '9002:9002'
+      - '8000:8000'
+      - '8986:8983'
+    volumes:
+      - './$APP_DIR:/src/$APP_DIR'
+    working_dir: /src/$APP_DIR/bin/platform/
+    depends_on:
+      - mysql
+    entrypoint:
+      - ./hybrisserver.sh
+  mysql:
+    image: $IMAGE_MYSQL
+    container_name: $CONTAINER_NAME_MYSQL
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./docker/mysql/initdb:/docker-entrypoint-initdb.d
+
+networks:
+  default:
+    external:
+      name: $DOCKER_NETWORK
