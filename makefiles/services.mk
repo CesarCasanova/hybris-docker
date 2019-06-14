@@ -13,13 +13,9 @@ DATABASES			= ${OWNER}_hybris_trails
 ## SERVICES TARGETS ##
 build-services: ## Build all needed services
 	@make build-mysql
-	@make build-solr5
 
 build-mysql: ## Build docker image for mysql
 	@docker build -f docker/mysql/Dockerfile -t $(IMAGE_MYSQL) docker/mysql/
-
-build-solr5: ## Build docker image for solr
-	@docker build -f docker/solr5/Dockerfile -t ${IMAGE_SOLR5} docker/solr5/
 
 clear-mysql:
 	@for dbname in $(DATABASES); do \
