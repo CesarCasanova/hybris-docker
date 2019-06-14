@@ -24,6 +24,9 @@ up: verify_network ## Start the project: make up
 down: ## Destroy the project: make down
 	@docker-compose -p $(PROJECT_NAME) down
 
+restart:
+	@docker-compose -p $(PROJECT_NAME) restart
+
 log: ## Show project logs: make log
 	@docker logs -f  $(CONTAINER_NAME)
 
@@ -38,6 +41,7 @@ task:
 		--net $(DOCKER_NETWORK) \
 		--entrypoint="" $(IMAGE_RUNTIME) \
 		sh -c '. ./setantenv.sh && ant $(TASK)'
+	@make restart
 
 clean:
 	@docker run -it --rm \
@@ -47,6 +51,7 @@ clean:
 		--net $(DOCKER_NETWORK) \
 		--entrypoint="" $(IMAGE_RUNTIME) \
 		sh -c '. ./setantenv.sh && ant clean'
+	@make restart
 
 all:
 	@docker run -it --rm \
@@ -56,6 +61,7 @@ all:
 		--net $(DOCKER_NETWORK) \
 		--entrypoint="" $(IMAGE_RUNTIME) \
 		sh -c '. ./setantenv.sh && ant all'
+	@make restart
 
 initialize:
 	@docker run -it --rm \
@@ -65,6 +71,7 @@ initialize:
 		--net $(DOCKER_NETWORK) \
 		--entrypoint="" $(IMAGE_RUNTIME) \
 		sh -c '. ./setantenv.sh && ant initialize'
+	@make restart
 
 remove:
 	@docker-compose rm -v
